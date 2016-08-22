@@ -6,15 +6,6 @@ import random
 #import Defaultchara
 
 
-# if os.path.exists("user/User0.py") == True:
-#     if os.stat("users/User0.py").st_size == 0:
-#         name = raw_input("Enter your user name: ")
-#         user_file = open("users/User0.py", "r+")
-#         user_file.write("info ={name:"+ name+'loc:0}\n')
-#
-#     else:
-#         pass
-
 class Character(object):
     ''' Base class for all characters (users and enemy)'''
     def __init__(self, name, health, descr, loc_id):
