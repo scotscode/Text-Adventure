@@ -189,8 +189,8 @@ def Callfunc(list1):
         rmdescription()
     elif "eat" in list1:
         #checks whether second word entered is a food and is in the user's inventory(invobj)
-#        print list1[1], food_dict, user.invobj
-        if list1[1] in (food_dict, user.invobj):
+        print list1[1], food_dict, user.invobj
+        if list1[1] in (food_dict and user.invobj):
             user.dropobj(list1[1])
             # find value for health increase from food_dict
             healthincrease = food_dict[list1[1]]
