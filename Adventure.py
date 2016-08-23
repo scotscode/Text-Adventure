@@ -120,11 +120,12 @@ north_room = Rooms([0,1],"The northern room",["plate"])
 south_room = Rooms([0,-1],"the southern room",["ice"])
 room11 = Rooms([1,1], "the (1,1) room", ["watch"])
 roomneg1neg1 = Rooms([-1,-1], "the (-1,-1) room", ["paper"])
+room1neg1 = Rooms([1,-1], "the (1,-1) room", ['pen'])
 
 
 
 #update roomlist when initialising new rooms
-roomlist = [init_room, west_room, east_room, north_room, south_room, room11, roomneg1neg1]
+roomlist = [init_room, west_room, east_room, north_room, south_room, room11, roomneg1neg1, room1neg1]
 
 #initialise our characters. Arguments as follows: name, health, description, coordinates (init location)
 user = Character('user', 100, None, [0,0])
@@ -146,29 +147,89 @@ def analyse(user_input):
     split = user_input.split()
     return split
 
+def check_walls(directio):
+    if directio == "north":
+        for rooms in roomlist:
+            theoposition = user.loc_id[1] + 1
+            fullpos = [user.loc_id[0], theoposition]
+#            print fullpos, theoposition, rooms.id, roomlist
+            if fullpos == rooms.id:
+                return True
+            if fullpos != rooms.id:
+                pass
+                #print False
+    elif directio == "south":
+        for rooms in roomlist:
+            theoposition = user.loc_id[1] -1
+            fullpos = [user.loc_id[0], theoposition]
+#            print fullpos, theoposition, rooms.id, roomlist
+            if fullpos == rooms.id:
+                return True
+            if fullpos != rooms.id:
+                pass
+    elif directio == "east":
+        for rooms in roomlist:
+            theoposition = user.loc_id[0] + 1
+            fullpos = [user.loc_id[0], theoposition]
+#            print fullpos, theoposition, rooms.id, roomlist
+            if fullpos == rooms.id:
+                return True
+            if fullpos != rooms.id:
+                pass
+    elif directio == "west":
+        for rooms in roomlist:
+            theoposition = user.loc_id[0] - 1
+            fullpos = [user.loc_id[0], theoposition]
+#            print fullpos, theoposition, rooms.id, roomlist
+            if fullpos == rooms.id:
+                return True
+            if fullpos != rooms.id:
+                pass
+                #print False
+                #print False
+                #print False
+
+
+
 def Callfunc(list1):
     '''analyse single words and call functions/methods as appropiate'''
     if "go" in list1:
         if "west" in list1:
-            user.move("west")
-            for room in roomlist:
-                if room.id == user.loc_id:
-                    print room.descr
+            check = check_walls("west")
+            if check != True:
+                print "You have encountered a wall"
+            else:
+                user.move("west")
+                for room in roomlist:
+                    if room.id == user.loc_id:
+                        print room.descr
         elif "east" in list1:
-            user.move("east")
-            for room in roomlist:
-                if room.id == user.loc_id:
-                    print room.descr
+            check = check_walls("east")
+            if check != True:
+                print "You have encountered a wall"
+            else:
+                user.move("east")
+                for room in roomlist:
+                    if room.id == user.loc_id:
+                        print room.descr
         elif "south" in list1:
-            user.move("south")
-            for room in roomlist:
-                if room.id == user.loc_id:
-                    print room.descr
+            check = check_walls("south")
+            if check != True:
+                print "You have encountered a wall"
+            else:
+                user.move("south")
+                for room in roomlist:
+                    if room.id == user.loc_id:
+                        print room.descr
         elif "north" in list1:
-            user.move("north")
-            for room in roomlist:
-                if room.id == user.loc_id:
-                    print room.descr
+            check = check_walls("north")
+            if check != True:
+                print "You have encountered a wall"
+            else:
+                user.move("north")
+                for room in roomlist:
+                    if room.id == user.loc_id:
+                        print room.descr
         else:
             print "You need to specify a valid direction"
     elif "take" in list1:
