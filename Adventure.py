@@ -147,55 +147,22 @@ def analyse(user_input):
     split = user_input.split()
     return split
 
-def check_walls(directio):
-    if directio == "north":
-        for rooms in roomlist:
-            theoposition = user.loc_id[1] + 1
-            fullpos = [user.loc_id[0], theoposition]
-#            print fullpos, theoposition, rooms.id, roomlist
-            if fullpos == rooms.id:
-                return True
-            if fullpos != rooms.id:
-                pass
+def check_walls( x_or_y, pos_or_neg):
+    for rooms in roomlist:
+        theoposition = user.loc_id[x_or_y] + pos_or_neg
+        fullpos = [user.loc_id[0], theoposition]
+#       print fullpos, theoposition, rooms.id, roomlist
+        if fullpos == rooms.id:
+            return True
+        if fullpos != rooms.id:
+            pass
                 #print False
-    elif directio == "south":
-        for rooms in roomlist:
-            theoposition = user.loc_id[1] -1
-            fullpos = [user.loc_id[0], theoposition]
-#            print fullpos, theoposition, rooms.id, roomlist
-            if fullpos == rooms.id:
-                return True
-            if fullpos != rooms.id:
-                pass
-    elif directio == "east":
-        for rooms in roomlist:
-            theoposition = user.loc_id[0] + 1
-            fullpos = [user.loc_id[0], theoposition]
-#            print fullpos, theoposition, rooms.id, roomlist
-            if fullpos == rooms.id:
-                return True
-            if fullpos != rooms.id:
-                pass
-    elif directio == "west":
-        for rooms in roomlist:
-            theoposition = user.loc_id[0] - 1
-            fullpos = [user.loc_id[0], theoposition]
-#            print fullpos, theoposition, rooms.id, roomlist
-            if fullpos == rooms.id:
-                return True
-            if fullpos != rooms.id:
-                pass
-                #print False
-                #print False
-                #print False
-
-
 
 def Callfunc(list1):
     '''analyse single words and call functions/methods as appropiate'''
     if "go" in list1:
         if "west" in list1:
-            check = check_walls("west")
+            check = check_walls(0,-1)
             if check != True:
                 print "You have encountered a wall"
             else:
@@ -204,7 +171,7 @@ def Callfunc(list1):
                     if room.id == user.loc_id:
                         print room.descr
         elif "east" in list1:
-            check = check_walls("east")
+            check = check_walls(0,1)
             if check != True:
                 print "You have encountered a wall"
             else:
@@ -213,7 +180,7 @@ def Callfunc(list1):
                     if room.id == user.loc_id:
                         print room.descr
         elif "south" in list1:
-            check = check_walls("south")
+            check = check_walls(1,-1)
             if check != True:
                 print "You have encountered a wall"
             else:
@@ -222,7 +189,7 @@ def Callfunc(list1):
                     if room.id == user.loc_id:
                         print room.descr
         elif "north" in list1:
-            check = check_walls("north")
+            check = check_walls(1,1)
             if check != True:
                 print "You have encountered a wall"
             else:
