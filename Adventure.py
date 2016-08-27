@@ -121,6 +121,7 @@ south_room = Rooms([0,-1],"the southern room",["ice"])
 room11 = Rooms([1,1], "the (1,1) room", ["watch"])
 roomneg1neg1 = Rooms([-1,-1], "the (-1,-1) room", ["paper"])
 room1neg1 = Rooms([1,-1], "the (1,-1) room", ['pen'])
+#roomneg11 = Rooms()
 
 
 
@@ -150,53 +151,34 @@ def analyse(user_input):
 def check_walls( x_or_y, pos_or_neg):
     for rooms in roomlist:
         theoposition = user.loc_id[x_or_y] + pos_or_neg
-        fullpos = [user.loc_id[0], theoposition]
+        if x_or_y == 1:
+            fullpos = [user.loc_id[0], theoposition]
+        elif x_or_y == 0:
+            fullpos = [theoposition, user.loc_id[1]]
 #       print fullpos, theoposition, rooms.id, roomlist
         if fullpos == rooms.id:
             return True
         if fullpos != rooms.id:
             pass
                 #print False
-
+def move(direction, x, y):
+    check = check_walls(x,y)
+    if check != True:
+        print "You have encountered a wall"
+    else:
+        user.move(direction)
+        rmdescription()
 def Callfunc(list1):
     '''analyse single words and call functions/methods as appropiate'''
     if "go" in list1:
         if "west" in list1:
-            check = check_walls(0,-1)
-            if check != True:
-                print "You have encountered a wall"
-            else:
-                user.move("west")
-                for room in roomlist:
-                    if room.id == user.loc_id:
-                        print room.descr
+            move("west", 0, -1)
         elif "east" in list1:
-            check = check_walls(0,1)
-            if check != True:
-                print "You have encountered a wall"
-            else:
-                user.move("east")
-                for room in roomlist:
-                    if room.id == user.loc_id:
-                        print room.descr
+            move("east",0, 1)
         elif "south" in list1:
-            check = check_walls(1,-1)
-            if check != True:
-                print "You have encountered a wall"
-            else:
-                user.move("south")
-                for room in roomlist:
-                    if room.id == user.loc_id:
-                        print room.descr
+            move("south", 1, -1)
         elif "north" in list1:
-            check = check_walls(1,1)
-            if check != True:
-                print "You have encountered a wall"
-            else:
-                user.move("north")
-                for room in roomlist:
-                    if room.id == user.loc_id:
-                        print room.descr
+            move("north", 1, 1)
         else:
             print "You need to specify a valid direction"
     elif "take" in list1:
@@ -217,7 +199,6 @@ def Callfunc(list1):
         rmdescription()
     elif "eat" in list1:
         #checks whether second word entered is a food and is in the user's inventory(invobj)
-        print list1[1], food_dict, user.invobj
         if list1[1] in (food_dict and user.invobj):
             user.dropobj(list1[1])
             # find value for health increase from food_dict
@@ -267,10 +248,8 @@ while True:
         for users in character_list:
             if room.id == users.loc_id:
                 # adds character to room unless dead
-                if users.name not in room.character:
-                    if users.life == True:
-                        room.add_character(users.name)
-    #print room.character, room.id
+                if users.name not in room.character and users.life == True:
+                    room.add_character(users.name)
             #if the room and user don't have same coordinate, it attempts to remove user from room
             if room.id != users.loc_id:
                 try:
@@ -278,16 +257,12 @@ while True:
                 except ValueError:
                     pass
     #checks for other characters (enemy) in room and displays enemy info
-    for rooms in roomlist:
-#        print rooms.id, rooms.character
-        if len(rooms.character) > 1:
-            #print "another character in room ", rooms.id
+        if len(room.character) > 1:
             for charas in character_list:
-                if charas.name in rooms.character:
+                if charas.name in room.character and charas.name != "user":
                     #print the desription of enemy and add to user's enemy list
-                    if charas.name != "user":
-                        print charas.descr
-                        user.enemies.append(charas.name)
+                    print charas.descr
+                    user.enemies.append(charas.name)
     # remove character from user's enemy list if not in same room
     for enemy in character_list:
         if user.loc_id != enemy.loc_id:
