@@ -233,7 +233,7 @@ def Callfunc(list1):
                 # executes if a weapon is listed but not in user's inventory
                     if members in list1:
                         if members not in user.invobj:
-                            print "you don't have the weapon", members
+                            print "you don't have a", members
         else:
             print "cannot see enemy"
 
@@ -243,7 +243,6 @@ def Callfunc(list1):
     else:
         print "command entered not valid"
 while True:
-
     for room in roomlist:
         for users in character_list:
             if room.id == users.loc_id:
